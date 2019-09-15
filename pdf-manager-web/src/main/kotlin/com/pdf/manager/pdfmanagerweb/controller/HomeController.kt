@@ -1,4 +1,4 @@
-package com.pdf.manager.web.pdfmanagerweb.controller
+package com.pdf.manager.pdfmanagerweb.controller
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping

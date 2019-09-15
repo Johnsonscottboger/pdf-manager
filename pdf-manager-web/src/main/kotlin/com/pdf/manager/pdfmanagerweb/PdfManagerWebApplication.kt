@@ -1,4 +1,4 @@
-package com.pdf.manager.web.pdfmanagerweb
+package com.pdf.manager.pdfmanagerweb
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
