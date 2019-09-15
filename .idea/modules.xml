@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/paf-manager-center/paf-manager-center.iml" filepath="$PROJECT_DIR$/paf-manager-center/paf-manager-center.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pdf-manager-user/pdf-manager-user.iml" filepath="$PROJECT_DIR$/pdf-manager-user/pdf-manager-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pdf-manager-web/pdf-manager-web.iml" filepath="$PROJECT_DIR$/pdf-manager-web/pdf-manager-web.iml" />
+    </modules>
+  </component>
+</project>
