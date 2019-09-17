@@ -1,7 +1,6 @@
 package com.pdf.manager.pdfmanageruser.dao
 
 import com.pdf.manager.pdfmanageruser.entity.User
-import javax.jws.soap.SOAPBinding
 
 /**
  * 提供 [User] 实体的操作方法

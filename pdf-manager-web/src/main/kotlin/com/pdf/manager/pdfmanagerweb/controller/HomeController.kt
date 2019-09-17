@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller
 class HomeController {
 
-    @GetMapping("/")
     @ResponseBody
-    fun index() : String{
+    @GetMapping("/")
+    fun index(): String {
+
         return "Welcome Web application."
     }
 }
