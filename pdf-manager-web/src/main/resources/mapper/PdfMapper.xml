@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pdf.manager.pdfmanagerweb.dao.IPdf">
-    <resultMap id="map" type="com.pdf.manager.pdfmanagerweb.entity.Pdf">
+<mapper namespace="com.pdf.manager.pdfmanagerweb.domain.dao.IPdf">
+    <resultMap id="map" type="com.pdf.manager.pdfmanagerweb.domain.dataobject.Pdf">
         <id column="id" property="id" jdbcType="CHAR"/>
         <result column="md5" property="md5" jdbcType="VARCHAR"/>
         <result column="userId" property="userId" jdbcType="VARCHAR"/>
@@ -50,25 +50,25 @@
 
     <select id="getAll" resultMap="map">
         select id, md5, userId, name, location, status, result, createDateTime
-        from Pdf
+        from pdf
         order by createDateTime
     </select>
 
     <select id="getById" resultMap="map">
         select id, md5, userId, name, location, status, result, createDateTime
-        from Pdf
+        from pdf
         where id = #{id}
     </select>
 
     <select id="getByName" resultMap="map">
         select id, md5, userId, name, location, status, result, createDateTime
-        from Pdf
+        from pdf
         where name like concat('%', #{name}, '%')
     </select>
 
     <select id="getByUserId" resultMap="map">
         select id, md5, userId, name, location, status, result, createDateTime
-        from Pdf
+        from pdf
         where userId = #{userId}
     </select>
 </mapper>

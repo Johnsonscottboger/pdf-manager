@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pdf.manager.pdfmanagerweb.dao.IDao">
-    <resultMap id="map" type="com.pdf.manager.pdfmanagerweb.entity.Doc">
+<mapper namespace="com.pdf.manager.pdfmanagerweb.domain.dao.IDao">
+    <resultMap id="map" type="com.pdf.manager.pdfmanagerweb.domain.dataobject.Doc">
         <id column="id" property="id" jdbcType="CHAR"/>
         <result column="md5" property="md5" jdbcType="VARCHAR"/>
         <result column="pdfId" property="pdfId" jdbcType="VARCHAR"/>
