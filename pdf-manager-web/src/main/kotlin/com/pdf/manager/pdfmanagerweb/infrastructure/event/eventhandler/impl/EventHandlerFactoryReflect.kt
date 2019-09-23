@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.stereotype.Component
 import java.io.File
+import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 import java.net.JarURLConnection
 import java.net.URLDecoder
@@ -58,24 +59,23 @@ class EventHandlerFactoryReflect : IEventHandlerFactory {
                     clazz.getDeclaredConstructor().newInstance()
                 }
                 for (method in clazz.declaredMethods.filter { p -> !p.isBridge }) {
-                    val event = method.parameters.firstOrNull { parameter -> parameter.type.kotlin.isSubclassOf(IEvent::class) }
-                    if (event != null) {
-                        map.getOrPut(event.type as Class<IEvent>, { hashSetOf() }).add(object : AbstractEventHandler<IEvent, Any?>() {
-                            override fun handle(event: IEvent) {
-                                if (event is IEventResult<*>)
-                                    this.handle(event as IEventResult<Any?>)
-                                else
-                                    method.invoke(instance, event)
-                            }
+                    val event = method.parameters.firstOrNull { parameter -> parameter.type.kotlin.isSubclassOf(IEvent::class) }?.type
+                            ?: continue
+                    map.getOrPut(event as Class<IEvent>, { hashSetOf() }).add(object : AbstractEventHandler<IEvent, Any?>() {
+                        override fun handle(event: IEvent) {
+                            if (event is IEventResult<*>)
+                                this.handle(event as IEventResult<Any?>)
+                            else
+                                method.invoke(instance, event)
+                        }
 
-                            override fun handle(event: IEventResult<Any?>): Any? {
-                                val result = method.invoke(instance, event)
-                                if (result != null)
-                                    event.result = result
-                                return result
-                            }
-                        })
-                    }
+                        override fun handle(event: IEventResult<Any?>): Any? {
+                            val result = method.invoke(instance, event)
+                            if (result != null)
+                                event.result = result
+                            return result
+                        }
+                    })
                 }
             } catch (ex: NoSuchMethodException) {
                 continue

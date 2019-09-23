@@ -11,5 +11,5 @@ class HomeController(val eventBus: IEventBus) {
 
     @ResponseBody
     @GetMapping("/")
-    fun index() = "Welcome Web Application"
+    fun index() = eventBus.publish(GetUserAllPdfEvent("1"))
 }
