@@ -13,12 +13,12 @@
     </resultMap>
 
     <insert id="add" keyProperty="id" keyColumn="id">
-        insert into Pdf (id, md5, userId, name, location, status, result, createDateTime)
+        insert into pdf (id, md5, userId, name, location, status, result, createDateTime)
         values (#{id}, #{md5}, #{userId}, #{name}, #{location}, #{status}, #{result}, #{createDateTime})
     </insert>
 
     <insert id="addRange">
-        insert into Pdf (id, md5, userId, name, location, status, result, createDateTime)
+        insert into pdf (id, md5, userId, name, location, status, result, createDateTime)
         values
         <foreach collection="list" item="user" index="index" separator=",">
             (#{id}, #{md5}, #{userId}, #{name}, #{location}, #{status}, #{result}, #{createDateTime})
@@ -26,12 +26,12 @@
     </insert>
 
     <delete id="delete">
-        delete from Pdf
+        delete from pdf
         where id = #{id}
     </delete>
 
     <update id="update">
-        update Pdf
+        update pdf
         set id = #{id},
             md5 = #{md5},
             userId = #{userId},
@@ -44,7 +44,7 @@
     </update>
 
     <insert id="addOrUpdate">
-        replace into Pdf (id, md5, userId, name, location, status, result, createDateTime)
+        replace into pdf (id, md5, userId, name, location, status, result, createDateTime)
         values (#{id}, #{md5}, #{userId}, #{name}, #{location}, #{status}, #{result}, #{createDateTime})
     </insert>
 

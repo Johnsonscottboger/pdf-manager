@@ -14,12 +14,12 @@
     </resultMap>
 
     <insert id="add" keyProperty="id" keyColumn="id">
-        insert into Doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
+        insert into doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
         values (#{id}, #{md5}, #{pdfId}, #{name}, #{location}, #{generatedType}, #{score}, #{createDateTime}, #{comments})
     </insert>
 
     <insert id="addRange">
-        insert into Doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
+        insert into doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
         values
         <foreach collection="list" item="user" index="index" separator=",">
             (#{id}, #{md5}, #{pdfId}, #{name}, #{location}, #{generatedType}, #{score}, #{createDateTime}, #{comments})
@@ -27,12 +27,12 @@
     </insert>
 
     <delete id="delete">
-        delete from Doc
+        delete from doc
         where id = #{id}
     </delete>
 
     <update id="update">
-        update Doc
+        update doc
         set id = #{id},
             md5 = #{md5},
             userId = #{userId},
@@ -46,31 +46,31 @@
     </update>
 
     <insert id="addOrUpdate">
-        replace into Doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
+        replace into doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
         values (#{id}, #{md5}, #{pdfId}, #{name}, #{location}, #{generatedType}, #{score}, #{createDateTime}, #{comments})
     </insert>
 
     <select id="getAll" resultMap="map">
         select id, md5, pdfId, name, location, generatedType, score, createDateTime, comments
-        from Pdf
+        from doc
         order by createDateTime
     </select>
 
     <select id="getById" resultMap="map">
         select id, md5, pdfId, name, location, generatedType, score, createDateTime, comments
-        from Pdf
+        from doc
         where id = #{id}
     </select>
 
     <select id="getByName" resultMap="map">
         select id, md5, pdfId, name, location, generatedType, score, createDateTime, comments
-        from Pdf
+        from doc
         where name like concat('%', #{name}, '%')
     </select>
 
     <select id="getByPdfId" resultMap="map">
         select id, md5, pdfId, name, location, generatedType, score, createDateTime, comments
-        from Pdf
+        from doc
         where pdfId = #{pdfId}
     </select>
 </mapper>

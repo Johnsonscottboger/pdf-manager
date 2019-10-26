@@ -6,7 +6,7 @@ import com.pdf.manager.pdfmanagerweb.infrastructure.event.IEventResult
 /**
  * 基础事件, 包括 [Response] 响应结果
  */
-abstract class BaseEvent : IEventResult<Response> {
+abstract class BaseEvent<T: Any> : IEventResult<Response<T>> {
 
     /**
      * 获取操作
@@ -16,5 +16,5 @@ abstract class BaseEvent : IEventResult<Response> {
     /**
      * 获取结果
      */
-    override var result: Response = Response()
+    override var result: Response<T> = Response()
 }
