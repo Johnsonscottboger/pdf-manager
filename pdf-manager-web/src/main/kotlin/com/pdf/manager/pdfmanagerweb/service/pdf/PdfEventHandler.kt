@@ -5,11 +5,14 @@ import com.pdf.manager.pdfmanagerweb.domain.dataobject.Pdf
 import com.pdf.manager.pdfmanagerweb.domain.dto.Response
 import com.pdf.manager.pdfmanagerweb.infrastructure.event.eventhandler.EventHandler
 import com.pdf.manager.pdfmanagerweb.service.file.IFileService
+import com.pdf.manager.pdfmanagerweb.service.file.dto.AddPdfFile
 import com.pdf.manager.pdfmanagerweb.service.pdf.event.AddPdfEvent
 import com.pdf.manager.pdfmanagerweb.service.pdf.event.GetUserAllPdfEvent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.io.File
+import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.util.*
 import javax.annotation.Resource
@@ -40,8 +43,7 @@ class PdfEventHandler(val pdfService: IPdfService, val fileService: IFileService
     @EventHandler
     fun addPdf(event: AddPdfEvent): Response<Unit> {
         return try {
-            val (md5, location) = this.fileService.addFile(event.fileName, event.inputStream)
-
+            val (md5, location) = this.fileService.addFile(Paths.get(event.userId, event.fileName).toString(), event.inputStream)
             this.pdfService.addOrUpdate(Pdf(
                     id = UUID.randomUUID().toString(),
                     userId = event.userId,

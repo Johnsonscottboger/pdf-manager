@@ -1,9 +1,10 @@
-package com.pdf.manager.pdfmanagerweb.service.file.dto
+package com.pdf.manager.pdfmanagerfile.service.dto
 
 /**
  * 添加文件结果
  */
-data class AddPdfFile(
+data class FileResult(
+
         /**
          * 文件的 MD5 值
          */

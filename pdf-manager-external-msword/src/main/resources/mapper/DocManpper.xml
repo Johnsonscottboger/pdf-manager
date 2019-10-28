@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pdf.manager.pdfmanagerexternalmsword.domain.dao.IDao">
+    <resultMap id="map" type="com.pdf.manager.pdfmanagerexternalmsword.domain.dataobject.Doc">
+        <id column="id" property="id" jdbcType="CHAR"/>
+        <result column="md5" property="md5" jdbcType="VARCHAR"/>
+        <result column="pdfId" property="pdfId" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="location" property="location" jdbcType="VARCHAR"/>
+        <result column="generatedType" property="generatedType" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="NUMERIC"/>
+        <result column="createDateTime" property="createDateTime" jdbcType="DATE"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="add" keyProperty="id" keyColumn="id">
+        insert into doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
+        values (#{id}, #{md5}, #{pdfId}, #{name}, #{location}, #{generatedType}, #{score}, #{createDateTime}, #{comments})
+    </insert>
+
+    <insert id="addRange">
+        insert into doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
+        values
+        <foreach collection="list" item="user" index="index" separator=",">
+            (#{id}, #{md5}, #{pdfId}, #{name}, #{location}, #{generatedType}, #{score}, #{createDateTime}, #{comments})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+        delete from doc
+        where id = #{id}
+    </delete>
+
+    <update id="update">
+        update doc
+        set id = #{id},
+            md5 = #{md5},
+            userId = #{userId},
+            name = #{name},
+            location = #{location},
+            generatedType = #{generatedType},
+            score = #{score},
+            createDateTime = #{createDateTime},
+            comments = #{comments}
+        where id = #{id}
+    </update>
+
+    <insert id="addOrUpdate">
+        replace into doc (id, md5, pdfId, name, location, generatedType, score, createDateTime, comments)
+        values (#{id}, #{md5}, #{pdfId}, #{name}, #{location}, #{generatedType}, #{score}, #{createDateTime}, #{comments})
+    </insert>
+
+    <select id="getAll" resultMap="map">
+        select id, md5, pdfId, name, location, generatedType, score, createDateTime, comments
+        from doc
+        order by createDateTime
+    </select>
+
+    <select id="getById" resultMap="map">
+        select id, md5, pdfId, name, location, generatedType, score, createDateTime, comments
+        from doc
+        where id = #{id}
+    </select>
+
+    <select id="getByName" resultMap="map">
+        select id, md5, pdfId, name, location, generatedType, score, createDateTime, comments
+        from doc
+        where name like concat('%', #{name}, '%')
+    </select>
+
+    <select id="getByPdfId" resultMap="map">
+        select id, md5, pdfId, name, location, generatedType, score, createDateTime, comments
+        from doc
+        where pdfId = #{pdfId}
+    </select>
+</mapper>
