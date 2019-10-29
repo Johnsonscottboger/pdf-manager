@@ -19,12 +19,18 @@ class HomeController(val docService: IDocService) {
         return "/doc/index"
     }
 
+    /**
+     * 将指定的 PDF 文件转换为 Word
+     * @param pdfId 指定的 PDF
+     * @param fileName 指定的 PDF 文件名
+     * @param location 指定的文件位置
+     */
     @ResponseBody
     @PostMapping("/{pdfId}/convert")
-    fun convert(@PathVariable("pdfId") pdfId: String, file: MultipartFile): Response<Unit> {
+    fun convert(@PathVariable("pdfId") pdfId: String, @RequestParam("fileName") fileName: String, @RequestParam("location") location: String): Response<Unit> {
         val operation = "PDF 转换为 Word"
         return try {
-            this.docService.convert(pdfId, file)
+            this.docService.convert(pdfId, fileName, location)
             Response.succ(operation)
         } catch (ex: Exception) {
             Response.fail(operation, exception = ex)

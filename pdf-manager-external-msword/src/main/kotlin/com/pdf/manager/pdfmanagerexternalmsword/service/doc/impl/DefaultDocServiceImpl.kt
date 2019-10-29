@@ -3,7 +3,9 @@ package com.pdf.manager.pdfmanagerexternalmsword.service.doc.impl
 import com.pdf.manager.pdfmanagerexternalmsword.domain.dataobject.Doc
 import com.pdf.manager.pdfmanagerexternalmsword.service.doc.IDocService
 import com.pdf.manager.pdfmanagerexternalmsword.domain.dao.IDoc
+import com.pdf.manager.pdfmanagerexternalmsword.service.file.IFileService
 import com.pdf.manager.pdfmanagerexternalmsword.utils.FileUtils
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
@@ -18,14 +20,17 @@ import javax.annotation.Resource
  * [Doc] 操作服务默认实现
  */
 @Service
-class DefaultDocServiceImpl() : IDocService {
+class DefaultDocServiceImpl(val fileService: IFileService) : IDocService {
 
     @Resource
     private lateinit var _dao: IDoc
 
+    @Value("\${convertExePath}")
+    private lateinit var _convertExePath: String
+
     /**
      * 获取指定 [pdfId] 的 [Doc] 记录
-     * @param pdfId 指定的 [Pdf] 主键
+     * @param pdfId 指定的 PDF
      * @return [Doc] 记录
      */
     override fun getByPdfId(pdfId: String): List<Doc> {
@@ -34,30 +39,38 @@ class DefaultDocServiceImpl() : IDocService {
 
     /**
      * 将指定的 PDF 文件转换为 Word
+     * @param pdfId 指定的 PDF
+     * @param fileName 指定的 PDF 文件名
+     * @param location 指定的文件位置
      */
-    override fun convert(pdfId: String, file: MultipartFile) {
+    override fun convert(pdfId: String, fileName: String, location: String) {
         val tempDir = System.getProperty("java.io.tmpdir")
-        val fileName = Paths.get(tempDir, pdfId, file.originalFilename).toString()
-        val wordFileName = fileName.replace(".pdf", ".docx")
-        val pdf = File(fileName)
-        if (!pdf.parentFile.exists())
-            pdf.mkdirs()
-        file.transferTo(pdf)
+        val path = Paths.get(tempDir, pdfId, fileName).toString()
+        val bytes = this.fileService.getFile(location)
+        val pdf = File(path)
+        if (!pdf.parentFile.exists()) {
+            pdf.parentFile.mkdirs()
+            pdf.createNewFile()
+        }
+        pdf.writeBytes(bytes)
+        val wordFileName = path.replace(".pdf", ".docx")
         val runtime = Runtime.getRuntime()
-        runtime.exec(arrayOf("ConvertPDFToWord.exe", fileName, wordFileName))
-        val word = File(wordFileName)
-        if (word.exists()) {
-            this.add(Doc(
-                    id = UUID.randomUUID().toString(),
-                    md5 = FileUtils.getMD5(word),
-                    pdfId = pdfId,
-                    name = word.name,
-                    location = wordFileName,
-                    generatedType = "MS-WORD",
-                    score = 0.0,
-                    createDateTime = LocalDateTime.now(),
-                    comments = ""
-            ))
+        val process = runtime.exec(arrayOf(Paths.get(this._convertExePath, "ConvertPDFToWord.exe").toString(), path, wordFileName))
+        process.onExit().thenApply {
+            val word = File(wordFileName)
+            if (word.exists()) {
+                this.add(Doc(
+                        id = UUID.randomUUID().toString(),
+                        md5 = FileUtils.getMD5(word),
+                        pdfId = pdfId,
+                        name = word.name,
+                        location = wordFileName,
+                        generatedType = "MS-WORD",
+                        score = 0.0,
+                        createDateTime = LocalDateTime.now(),
+                        comments = ""
+                ))
+            }
         }
     }
 

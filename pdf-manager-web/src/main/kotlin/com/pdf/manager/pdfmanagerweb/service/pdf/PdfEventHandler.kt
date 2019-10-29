@@ -43,7 +43,7 @@ class PdfEventHandler(val pdfService: IPdfService, val fileService: IFileService
     @EventHandler
     fun addPdf(event: AddPdfEvent): Response<Unit> {
         return try {
-            val (md5, location) = this.fileService.addFile(Paths.get(event.userId, event.fileName).toString(), event.inputStream)
+            val (md5, location) = this.fileService.addFile(event.fileName, event.inputStream)
             this.pdfService.addOrUpdate(Pdf(
                     id = UUID.randomUUID().toString(),
                     userId = event.userId,
